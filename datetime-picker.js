@@ -35,7 +35,8 @@
                     timeText: '@',
                     clearText: '@',
                     closeText: '@',
-                    dateDisabled: '&'
+                    dateDisabled: '&',
+                    timeZone: '='
                 },
                 link: function (scope, element, attrs, ngModel) {
                     var dateFormat = uiDatetimePickerConfig.dateFormat,
@@ -165,7 +166,7 @@
                         ngModel.$parsers.unshift(parseDate);
                         ngModel.$formatters.push(function(value) {
                             scope.date = value;
-                            return ngModel.$isEmpty(value) ? value : dateFilter(value, dateFormat);
+                            return ngModel.$isEmpty(value) ? value : dateFilter(value, dateFormat, scope.timeZone);
                         });
                     } else {
                         ngModel.$formatters.push(function(value) {
@@ -238,7 +239,7 @@
                             scope.date = dt;
                         }
 
-                        var date = scope.date ? dateFilter(scope.date, dateFormat) : null;
+                        var date = scope.date ? dateFilter(scope.date, dateFormat, scope.timeZone) : null;
 
                         element.val(date);
                         ngModel.$setViewValue(date);

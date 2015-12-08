@@ -1,6 +1,6 @@
 // https://github.com/Gillardo/bootstrap-ui-datetime-picker
 // Version: 2.0.4
-// Released: 2015-12-07 
+// Released: 2015-12-08 
 angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bootstrap.position'])
     .constant('uiDatetimePickerConfig', {
         dateFormat: 'yyyy-MM-dd HH:mm',
@@ -38,7 +38,8 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                     timeText: '@',
                     clearText: '@',
                     closeText: '@',
-                    dateDisabled: '&'
+                    dateDisabled: '&',
+                    timeZone: '='
                 },
                 link: function (scope, element, attrs, ngModel) {
                     var dateFormat = uiDatetimePickerConfig.dateFormat,
@@ -168,7 +169,7 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                         ngModel.$parsers.unshift(parseDate);
                         ngModel.$formatters.push(function(value) {
                             scope.date = value;
-                            return ngModel.$isEmpty(value) ? value : dateFilter(value, dateFormat);
+                            return ngModel.$isEmpty(value) ? value : dateFilter(value, dateFormat, scope.timeZone);
                         });
                     } else {
                         ngModel.$formatters.push(function(value) {
@@ -241,7 +242,7 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                             scope.date = dt;
                         }
 
-                        var date = scope.date ? dateFilter(scope.date, dateFormat) : null;
+                        var date = scope.date ? dateFilter(scope.date, dateFormat, scope.timeZone) : null;
 
                         element.val(date);
                         ngModel.$setViewValue(date);
