@@ -1,6 +1,6 @@
 // https://github.com/Gillardo/bootstrap-ui-datetime-picker
-// Version: 2.3.1
-// Released: 2016-04-07 
+// Version: 2.3.2
+// Released: 2016-04-20 
 angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bootstrap.position'])
     .constant('uiDatetimePickerConfig', {
         dateFormat: 'yyyy-MM-dd HH:mm',
@@ -57,8 +57,7 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
             this.init = function(_ngModel) {
                 ngModel = _ngModel;
                 ngModelOptions = ngModel.$options || uiDatetimePickerConfig.ngModelOptions;
-
-                $scope.buttonBar = angular.isDefined($attrs.buttonBar) ? $scope.$parent.$eval($attrs.buttonBar) : uiDatetimePickerConfig.buttonBar;
+                $scope.buttonBar = getButtonBar()
 
                 // determine which pickers should be available. Defaults to date and time
                 $scope.enableDate = angular.isDefined($scope.enableDate) ? $scope.enableDate : uiDatetimePickerConfig.enableDate;
@@ -224,11 +223,13 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
 
             // get text
             $scope.getText = function (key) {
+                $scope.buttonBar = getButtonBar()
                 return $scope.buttonBar[key].text || uiDatetimePickerConfig.buttonBar[key].text;
             };
 
             // determine if button is to be shown or not
             $scope.doShow = function(key) {
+                $scope.buttonBar = getButtonBar()
                 if (angular.isDefined($scope.buttonBar[key].show))
                     return $scope.buttonBar[key].show;
                 else
@@ -424,6 +425,11 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                 $element.unbind('keydown', inputKeydownBind);
                 $document.unbind('click', documentClickBind);
             });
+
+            function getButtonBar() {
+                return angular.isDefined($attrs.buttonBar) ? $scope.$parent.$eval($attrs.buttonBar) : uiDatetimePickerConfig.buttonBar;
+            }
+
 
             function documentClickBind(evt) {
                 var popup = $popup[0];
